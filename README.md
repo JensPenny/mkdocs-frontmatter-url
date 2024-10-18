@@ -24,7 +24,7 @@ plugins:
 ```yaml
 ---
 title: My Page
-url: https://example.com
+gitlab: https://example.com
 ---
 
 # Welcome to My Page

@@ -1,6 +1,6 @@
 ---
 Title: Test page
-url: https://www.google.com
+gitlab: https://www.google.com
 ---
 
 # Test page
