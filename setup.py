@@ -10,7 +10,6 @@ setup(
     author='Jens Penny',
     author_email='jens.penny+pypi@gmail.com',
     license='MIT',
-    python_requires='>=3.6',
     install_requires=[
         'mkdocs',
     ],
@@ -21,10 +20,6 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
     ],
     packages=find_packages(),
     entry_points={
