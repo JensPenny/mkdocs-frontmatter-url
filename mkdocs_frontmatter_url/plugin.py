@@ -56,8 +56,13 @@ class FrontmatterUrlPlugin(BasePlugin):
         # Combine all elements
         additional_html = f"<head>{css_styles}\n{font_awesome_link}\n</head>{button_html}\n\n"
 
-        # Insert the additional HTML after the frontmatter
-        markdown = additional_html + markdown
+        # Insert the additional HTML after the first heading
+        pattern = r'^(#.*?\n)'
+        if re.search(pattern, markdown, re.MULTILINE):
+            markdown = re.sub(pattern, f'\\1\n{additional_html}', markdown, count=1, flags=re.MULTILINE)
+        else:
+            # If no heading is found, append to the end of the document
+            markdown = f'\n{additional_html} + {markdown}'
 
         log.info(f"Markdown processed for page: {page.file.src_path}")
         return markdown
