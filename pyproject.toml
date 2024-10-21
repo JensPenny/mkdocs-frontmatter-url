@@ -22,5 +22,8 @@ dependencies = [
     'mkdocs'
 ]
 
+[project.urls]
+Repository = "https://github.com/JensPenny/mkdocs-frontmatter-url.git"
+
 [project.entry-points."mkdocs.plugins"]
 frontmatter-url = 'mkdocs_frontmatter_url.plugin:FrontmatterUrlPlugin'
