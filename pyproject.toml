@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mkdocs-frontmatter-url"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
     { name = "Jens Penny", email = "jens.penny+pypi@gmail.com"}
 ]
