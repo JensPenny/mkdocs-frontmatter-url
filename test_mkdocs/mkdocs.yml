@@ -1,7 +1,0 @@
-site_name: My Docs
-
-dev_addr: 127.0.0.1:8081
-plugins:
-  - frontmatter-url:
-      frontmatter-url-name: gitlab
-      button-text: Give feedback here
