@@ -70,7 +70,9 @@ def do_on_markdown(config, site_navigation, page):
         return plugin.on_page_markdown(content.strip(), page, config, site_navigation)
     return md 
 
-def test_convert_with_heading(do_on_markdown):
+# Test: A normal markdown file with a first and second heading
+# We expect the button to be under the first heading
+def test_convert_with_base_heading(do_on_markdown):
     frontmatter_block = """
 ---
 url: https://example.com
@@ -88,13 +90,9 @@ Second test text
 """
     result = do_on_markdown(frontmatter_block + markdown_to_test)
     log.info(result)
-    
-    # Check if the result contains the necessary elements
-    assert '<style>' in result
-    assert '<script src="https://kit.fontawesome.com/e147252cfa.js" crossorigin="anonymous"></script>' in result
-    assert '<a href="https://example.com" class="frontmatter-url-tag" target="_blank">' in result
-    assert '<i class="fas fa-comment-alt"></i>Visit link</a>' in result
-    
+
+    assert_basic_style(result)
+
     # Check if the button is inserted after the first heading
     first_heading_pattern = r'# This is the first heading'
     button_pattern = r'<a href="https://example.com" class="frontmatter-url-tag" target="_blank">'
@@ -104,3 +102,64 @@ Second test text
     assert 'This is a test text' in result
     assert '## This is the second heading' in result
     assert 'Second test text' in result
+
+# Test: A normal markdown file starting with a second heading
+# We expect the button to be above the second heading
+def test_convert_with_second_heading(do_on_markdown):
+    frontmatter_block = """
+---
+url: https://example.com
+---
+"""
+
+    markdown_to_test = """
+## This is the second heading
+
+Second test text
+"""
+    result = do_on_markdown(frontmatter_block + markdown_to_test)
+
+    assert_basic_style(result)
+        
+    # Check if the button is inserted before the second heading. The first heading is the page title by default
+    second_heading_pattern = r'## This is the second heading'
+    button_pattern = r'<a href="https://example.com" class="frontmatter-url-tag" target="_blank">'
+    assert re.search(f'{button_pattern}.*?{second_heading_pattern}', result, re.DOTALL) is not None
+
+    # Check if the original content is preserved
+    assert '## This is the second heading' in result
+    assert 'Second test text' in result
+
+# Test: A normal markdown file without a heading
+# We expect the button to be above the markdown text
+def test_convert_without_headings(do_on_markdown):
+    frontmatter_block = """
+---
+url: https://example.com
+---
+"""
+
+    markdown_to_test = """
+This is just a basic text
+Some stuff without headings is also possible
+"""
+    result = do_on_markdown(frontmatter_block + markdown_to_test)
+    log.info(result)
+
+    assert_basic_style(result)
+        
+    # Check if the button is the top of the document
+    button_pattern = r'<a href="https://example.com" class="frontmatter-url-tag" target="_blank">'
+    text_pattern = r'This is just a basic text'
+    assert re.search(f'{button_pattern}.*?{text_pattern}', result, re.DOTALL) is not None
+
+    # Check if the original content is preserved
+    assert 'This is just a basic text' in result
+    assert 'Some stuff without headings is also possible' in result
+
+# Utility function to assert if the basic style and script elements are preserved in the generated markdown
+def assert_basic_style(result):
+    assert '<style>' in result
+    assert '<script src="https://kit.fontawesome.com/e147252cfa.js" crossorigin="anonymous"></script>' in result
+    assert '<a href="https://example.com" class="frontmatter-url-tag" target="_blank">' in result
+    assert '<i class="fas fa-comment-alt"></i>Visit link</a>' in result
