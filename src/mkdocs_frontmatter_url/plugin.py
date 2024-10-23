@@ -2,6 +2,7 @@ import re
 import logging
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
+from mkdocs.config import Config
 
 log = logging.getLogger(__name__)
 
@@ -11,7 +12,7 @@ class FrontmatterUrlPlugin(BasePlugin):
         ('frontmatter-url-name', config_options.Type(str, default='url')),
     )
 
-    def on_page_markdown(self, markdown, page, config, files):
+    def on_page_markdown(self, markdown, page, config: Config, files):
         log.info(f"on_page_markdown triggered for page: {page.file.src_path}")
         log.info(f'Meta information:{page.meta}')
         url_selector = self.config['frontmatter-url-name']
